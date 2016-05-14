@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Hello world!
+ * Order Service
  *
  */
 public class OrderService
@@ -39,6 +39,9 @@ public class OrderService
           List<Future<String>> futures = executor.invokeAll(callableList);
           Future<String> future = null;
 
+          //the ExecutorService retains the order of the callables in the Future List hence
+          //first object here is the call to service a and second to service b, irrespective of the
+          //order in which the services got invoked
           future = futures.get(0);
           outA = future.get();
           future = futures.get(1);
@@ -47,7 +50,7 @@ public class OrderService
         } catch (InterruptedException|ExecutionException e) {
             //output of A and B defaulted to null
         }
-
+        executor.shutdown();
 
         return(serviceC.service(serviceAA.service(outA), outB));
     }
