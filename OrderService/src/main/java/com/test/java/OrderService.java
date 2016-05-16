@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Order Service
+ * Order Servicepwd
+
  *
  */
 public class OrderService
@@ -19,12 +20,13 @@ public class OrderService
 
         List<Callable<String>> callableList = new ArrayList();
 
-        callableList.add(new Callable<String>(){
-                public String call() throws Exception {
-                	return (new ServiceA().service());
-                }
-            });
+      callableList.add(new Callable<String>(){
+        public String call() throws Exception {
+          return (new ServiceAA().service(new ServiceA().service()));
+        }
+      });
 
+      
         callableList.add(new Callable<String>(){
                 public String call() throws Exception {
                 	return (new ServiceB().service());
@@ -33,7 +35,7 @@ public class OrderService
 
         ExecutorService executor = Executors.newFixedThreadPool(callableList.size());
 
-      String outA = null;
+      String outAA = null;
       String outB = null;
       try {
           List<Future<String>> futures = executor.invokeAll(callableList);
@@ -43,7 +45,7 @@ public class OrderService
           //first object here is the call to service a and second to service b, irrespective of the
           //order in which the services got invoked
           future = futures.get(0);
-          outA = future.get();
+          outAA = future.get();
           future = futures.get(1);
           outB = future.get();
 
@@ -52,6 +54,6 @@ public class OrderService
         }
         executor.shutdown();
 
-        return(serviceC.service(serviceAA.service(outA), outB));
+        return(serviceC.service(outAA, outB));
     }
 }
