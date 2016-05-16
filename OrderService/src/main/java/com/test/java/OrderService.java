@@ -22,14 +22,20 @@ public class OrderService
 
       callableList.add(new Callable<String>(){
         public String call() throws Exception {
-          return (new ServiceAA().service(new ServiceA().service()));
+          ServiceA serviceA = new ServiceA();
+          ServiceAA serviceAA = new ServiceAA();
+          String outA = serviceA.service();
+          String outAA = serviceAA.service(outA);
+          return (outAA);
         }
       });
 
-      
+
         callableList.add(new Callable<String>(){
                 public String call() throws Exception {
-                	return (new ServiceB().service());
+                  ServiceB serviceB = new ServiceB();
+                  String outB = serviceB.service();
+                	return (outB);
                 }
             });
 
